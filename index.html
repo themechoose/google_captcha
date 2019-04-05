@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Google Captcha</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-md-12">
+                <h4 class="mb-4">Contact Form With Google Captcha</h4>
+                <form action="assets/php/mail.php" method="post" id="contact_form">
+                    <!--form aler message start-->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="alert alert-success contact_msg" style="display: none" role="alert">
+                                Your message was sent successfully.
+                            </div>
+                        </div>
+                    </div>
+                    <!--form alert message end-->
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <input type="text" class="form-control" name="name" placeholder="Enter Name" required="required">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <input type="email" class="form-control" name="email" placeholder="Enter Email" required="required">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="subject" placeholder="Enter Subject" required="required">
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" name="message" placeholder="Write Message" rows="4"></textarea>
+                    </div>
+                    <div class="g-recaptcha mb-4" data-sitekey="6LeOUJwUAAAAADsG7Kvs9zSG2pGGa7ux4L-h73nL"></div>
+                    <button type="submit" class="btn btn-secondary-outline">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+
+    <script>
+        $(function() {
+            /*--------------------------------------
+                Ajax contact js
+            ----------------------------------------*/
+            var contactForm = document.getElementById('contact_form');
+
+            if (contactForm) {
+                /*Ajax contact form js
+                -------------------------*/
+                var form = $('#contact_form'),
+                    message = $('.contact_msg'),
+                    form_data;
+                // Success function
+                function done_func(response) {
+                    message.fadeIn().removeClass('alert-danger').addClass('alert-success');
+                    message.text(response);
+                    setTimeout(function() {
+                        message.fadeOut();
+                    }, 2000);
+                    form.find('input:not([type="submit"]), textarea').val('');
+                }
+                // fail function
+                function fail_func(data) {
+                    message.fadeIn().removeClass('alert-success').addClass('alert-success');
+                    message.text(data.responseText);
+                    setTimeout(function() {
+                        message.fadeOut();
+                    }, 2000);
+                }
+                form.submit(function(e) {
+                    e.preventDefault();
+                    form_data = $(this).serialize();
+                    $.ajax({
+                            type: 'POST',
+                            url: form.attr('action'),
+                            data: form_data
+                        })
+                        .done(done_func)
+                        .fail(fail_func);
+                });
+            }
+        });
+
+    </script>
+</body>
+
+</html>
