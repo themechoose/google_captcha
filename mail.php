@@ -2,7 +2,7 @@
     
     // Only process POST reqeusts.
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $secret_key = '6LeOUJwUAAAAACo7ut7eWfpEI-NqyCFsXvUGBPeC'; /*Here replace your google captcha secret key*/
+        $secret_key = 'YOUR_SECRET_KEY'; /*Here replace your google captcha secret key*/
         // Get the form fields and remove whitespace.
         $name = strip_tags(trim($_POST["name"]));
         $name = str_replace(array("\r","\n"),array(" "," "),$name);
